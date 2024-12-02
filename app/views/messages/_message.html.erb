@@ -1,0 +1,5 @@
+<%= turbo_frame_tag(dom_id(message)) do %>
+  <p>
+    <strong><%= message.user.name%></strong>: <%= message.content %> 
+  </p>
+<% end %>

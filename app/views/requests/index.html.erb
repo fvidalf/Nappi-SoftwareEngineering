@@ -1,0 +1,29 @@
+<% unless @all_requests.empty? %>
+  <h2> Solicitudes </h2>
+  <table class="table is-bordered is-fullscreen">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Estado</th>
+      </tr>
+    <tbody>
+      <% @all_requests.each do |request|%>
+        <tr>
+          <td><%= request.date %></td>
+          <td><%= request.status %></td>
+          <% if request.status == "Procesando" %>
+            <td><%= button_to "Agregar productos", products_path, method: :get %></td>
+          <% else %>
+            <td><%= button_to "Detalles", request_path(request.id), method: :get %></td>
+          <% end %>
+          <% if request.status != "Finalizada" %>
+          <td><%= button_to "Cancelar", request_path(request.id), method: :delete %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h2> Aún no has enviado ninguna solicitud de compra ¡Anímate, compra algo!</h2>
+<% end %>
+<%= link_to "Volver a productos", products_path %>

@@ -1,0 +1,11 @@
+
+<div class="container">
+  <%= turbo_stream_from @chat, :messages %>
+  <div id="messages">
+    <% @messages.each do |message| %>
+      <%= render message %>
+    <% end %>
+  </div>
+  <%= render "messages/form", chat: @chat %>
+  <%= link_to "Volver a chats", index_chats_path(user_id: current_user.id), class: "no-link pb-5" %>
+</div>

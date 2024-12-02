@@ -1,0 +1,40 @@
+
+<div class="container">
+  <p class="title is-size-3 pt-5">Chats</p>
+  <% unless @all_chats.empty? %>         
+  <table class="table is-bordered is-fullscreen">
+    <thead>
+        <tr>
+          <th> Foto </th>
+        <% if current_user.is_admin == false %>
+          <th> Tiendas </th>
+        <% else %>
+          <th> Usuarios </th>
+        <% end %>
+        </tr>
+      <tbody>
+        <% @all_chats.each_with_index do |chat, index|%>
+          <tr>
+            <td>
+              <figure class="inline-block image is-24x24">
+                <%= image_tag(User.find(@ids[index]).image_url, :class => "is-rounded") if User.find(@ids[index]).image%>
+              </figure>
+            </td>
+            <td><%= @names[index] %></td>
+            <td><%= button_to "Abrir chat", show_chat_path(user_id: chat.user_id, admin_id: chat.admin_id), method: :get %></td>
+            <% if current_user.is_admin == true %>
+              <td><%= button_to "Eliminar chat", delete_chat_path(user_id: chat.user_id, chat_id: chat.id), method: :delete %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <% if current_user.is_admin %>
+      <h2>¡Ningún cliente ha comenzado un chat con tu tienda aún!</h2>
+    <% else %>
+      <h2>Aún no has comenzado un chat con alguna tienda</h2>
+    <% end %>
+  <% end %>
+  <%= link_to "Volver a productos", products_path, class: "no-link pb-5" %>
+</div>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ProyectoG64</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="padding-body">
+    <header>
+    <div id="notifications_div" class='blue-element' style='
+      text-align: center;
+      width: 100%;
+    '>
+    <%= turbo_stream_from current_user, :notifications %>
+      <div id="notice_wrapper">
+        <p class="notice"><%= notice %></p>
+      </div>
+      <div id="alert_wrapper">
+        <p class="alert"><%= alert %></p>
+      </div>
+    </div>
+    <div class="navbar is-fixed-top has-shadow">
+      <div class="navbar-brand">
+        <a class="title px-4 my-4 is-size-2" href="<%= products_path %>">
+          Nappi
+        </a>
+      </div>
+
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <% if user_signed_in?%>
+            <div class="navbar-item">
+              <p class="inline-block">Logged in as <strong class="is-uppercase"><%= current_user.name %></strong></p>
+              <% if current_user.is_admin == true %>
+                <p class="inline-block">(ADMIN)</p>
+              <% end %>
+              <% if current_user.is_super_admin == true %>
+                <p class="inline-block">(SUPERADMIN)</p>
+              <% end %>
+              <div class="columns">
+                <div class="column is-offset-1">
+                  <figure class="inline-block image is-24x24">
+                    <%= image_tag(current_user.image_url, :class => "is-rounded") if current_user.image%>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="navbar-item">
+              <%= button_to "Edit", edit_user_registration_path, method: :get, class: "button no-outline" %>
+            </div>
+            <div class="navbar-item">
+              <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "button no-outline" %>
+            </div>
+          <% else %>
+            <div class="navbar-item">
+              <%= button_to "Sign in", new_user_session_path, method: :get, class: "button no-outline" %>
+            </div>
+            <div class="navbar-item">
+              <p>OR</p>
+            </div>
+            <div class="navbar-item">
+              <%= button_to "Sign up", new_user_registration_path, method: :get, class: "button no-outline" %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="navbar-end">
+          <% if user_signed_in? %>
+            <div class="navbar-item">
+              <%= turbo_stream_from current_user, :notifications %>
+              <div id="notification">
+              </div>
+            </div>
+            <div class="navbar-item">
+              <%= button_to "Notificaciones", notifications_path(user_id: current_user.id), method: :get, class: "button no-outline" %>
+            </div>
+            </div>
+            <% if current_user.is_admin == true %>
+              <div class="navbar-item">
+                <%= button_to "Crear producto", new_product_path, method: :get, class: "button no-outline" %>
+              </div>
+              <div class="navbar-item">
+                <%= button_to "Chats", index_chats_path(user_id: current_user.id), method: :get, class: "button no-outline" %>
+              </div>
+              <div class="navbar-item">
+                <%= button_to "Solicitudes", admin_p_requests_path(current_user.id), method: :get, class: "button no-outline" %>  
+              </div>
+            <% end %>
+            <% if current_user.is_admin == false %>
+              <div class="navbar-item">
+                <%= button_to "Solicitudes", user_requests_path(current_user.id), method: :get, class: "button no-outline" %>
+              </div>
+              <div class="navbar-item">
+                <%= button_to "Carrito", user_cart_path(current_user.id), method: :get, class: "button no-outline" %>
+              </div>
+              <div class="navbar-item">
+                <%= button_to "Chats", index_chats_path(user_id: current_user.id), method: :get, class: "button no-outline" %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    </header>
+    <%= yield %>
+
+    <footer>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+      // Función para el fadeOut y vaciado del contenido
+        function fadeOutAndEmpty() {
+          $("#notice_wrapper").fadeOut(500, function() {
+            $(this).replaceWith('<div id="notice_wrapper"></div>');
+            $(this).fadeIn(100);
+          });
+        };
+
+        // Llamada inicial al fadeOut y vaciado después de 3.5 segundos
+        setTimeout(fadeOutAndEmpty, 3500); // 3.5 segundos en milisegundos
+      });
+    </script>
+  </body>
+</html>

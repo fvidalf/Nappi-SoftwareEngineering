@@ -1,0 +1,108 @@
+<div class="container">
+  <p class="has-text-centered title is-size-2 pt-5">Productos</p>
+</div>
+<br>
+
+<!-- Repeticiones de tiles cada 3 elementos de products -->
+<div class="container">
+  <% (@all_products.length() / 3).times do |i| %>
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+
+        <% (0..2).each do |j| %>
+        <%product = @all_products[3 * i + j]%>
+        <% puts 3 * i + j %>
+        <div class="tile is-parent px-5">
+          <div class="tile is-child box px-4">
+            <div class="columns">
+              <div class="column">
+              </div>
+              <div class="column">
+                <figure class="is-300-container mb-3">
+                  <%= image_tag(product.image_url, size: '300x300') if product.image%>
+                </figure>
+                <p class="title"><%= product.name%></p>
+                <p class="subtitle">$<%= product.price%></p>
+                <div class="columns">
+                  <div class="column is-one-third px-0">
+                    <%= button_to "Mostrar", product_path(product.id), method: :get, class: "button block" %>
+                  </div>
+                    <% if current_user.is_admin == false and current_user.is_super_admin == false %>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Agregar", requests_path,
+                            params: {user_id: current_user.id, product_id: product.id}, class: "button block" %>
+                    </div>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Chat", create_user_chat_path(user_id: current_user.id, admin_id: product.admin_id), class: "button block" %>
+                    </div>
+                  <% end %>
+                
+                  <% if current_user.is_admin == true or current_user.is_super_admin == true %>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Modificar", edit_product_path(product.id), method: :get, class: "button block" %>
+                    </div>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Eliminar", product, method: :delete, class: "button block" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              <div class="column">
+              </div>
+            </div>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Tiles para productos restantes -->
+  <% times = (@all_products.length / 3) * 3 %>
+  <div class="tile is-ancestor">
+    <div class="tile is-parent">
+    <% @all_products.drop(times).each do |product|%>
+      <div class="tile is-parent is-4 px-5">
+        <div class="tile is-child box px-4">
+          <div class="columns">
+            <div class="column">
+            </div>
+            <div class="column">
+              <figure class="is-300-container mb-3">
+                <%= image_tag(product.image_url, size: '300x300') if product.image%>
+              </figure>
+              <p class="title"><%= product.name%></p>
+              <p class="subtitle">$<%= product.price%></p>
+              <div class="columns">
+                  <div class="column is-one-third px-0">
+                    <%= button_to "Mostrar", product_path(product.id), method: :get, class: "button block" %>
+                  </div>
+                  <% if current_user.is_admin == false and current_user.is_super_admin == false %>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Agregar", requests_path,
+                            params: {user_id: current_user.id, product_id: product.id}, class: "button block" %>
+                    </div>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Chat", create_user_chat_path(user_id: current_user.id, admin_id: product.admin_id), class: "button block" %>
+                    </div>
+                  <% end %>
+                
+                  <% if current_user.is_admin == true or current_user.is_super_admin == true  %>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Modificar", edit_product_path(product.id), method: :get, class: "button block" %>
+                    </div>
+                    <div class="column is-one-third px-0">
+                      <%= button_to "Eliminar", product, method: :delete, class: "button block" %>
+                    </div>
+                  <% end %>
+                </div>
+            </div>
+            <div class="column">
+            </div>
+          </div> 
+        </div>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>

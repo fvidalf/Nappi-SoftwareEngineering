@@ -1,0 +1,56 @@
+<div class="container">
+  <p class="title is-size-3 pt-5">Modificar producto</p>
+    <div class="columns">
+      <div class="column is-6">
+        <%= form_with model: @product do |form| %>
+
+          <% if @product.errors.any? %>
+            <p><%= pluralize(@new_product.errors.count, "error") %> no ha permitido la creación del producto:</h2>
+            <ul>
+              <% @product.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          <% end %>
+
+
+          <div class="field">
+            <label class="label" for="product[name]">Nombre</label>
+            <div class="control">
+              <input class="input" type="text" id="product_name" name="product[name]" value="<%= @product.name %>"> 
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="product[price]">Precio</label>
+            <div class="control">
+              <input class="input" type="number" id="product_price" name="product[price]" value="<%= @product.price %>" step="100" min="500" max="50000">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="product[description]">Descripción</label>
+            <div class="control">
+              <textarea class="textarea" id="product_description" name="product[description]" ><%= @product.description %></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="product[image]">Imagen</label>
+            <div class="control">
+              <%= form.file_field :image %>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <%= form.submit class:"button"%>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <div>
+    <%= link_to "Volver a productos", products_path, method: :get, class: "no-link pb-5" %>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<%= form_with model: [chat, Message.new], remote: true do |form| %>
+  <%= form.text_field :content, class:"input" %>
+  <%= hidden_field_tag 'chat_id', @chat.id %>
+  <%= form.submit class:"button"%>
+<% end %>

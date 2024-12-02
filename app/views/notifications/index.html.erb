@@ -1,0 +1,29 @@
+<% unless @all_notifications.empty? %>
+  <h2 class="subtitle"> Notificaciones no leídas </h2>
+  <table class="table is-bordered is-fullscreen">
+    <tbody>
+      <% @all_notifications.each do |notification|%>
+        <tr>
+        <% if not notification.read %>
+          <td><%= notification.content %></td>
+          <td><%= button_to "Marcar como vista", read_notification_path(user_id: current_user.id, id: notification.id), method: :patch %></td>
+        <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <h2 class="subtitle"> Notificaciones leídas </h2>
+  <table class="table is-bordered is-fullscreen">
+    <tbody>
+      <% @all_notifications.each do |notification|%>
+        <tr>
+        <% if notification.read %>
+          <td><%= notification.content %></td>
+        <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h2 class="subtitle"> Aún no has recibido ninguna notificación </h2>
+<% end %>

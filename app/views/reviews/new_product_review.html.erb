@@ -1,0 +1,37 @@
+<h1 class="title">Crear Review</h1>
+
+<%= form_with(model: @new_review) do |form| %>
+  <% if @new_review.errors.any? %>
+    <div style="color: red;font-size: 0.8em;">
+      <h2><%= pluralize(@new_review.errors.count, "error") %> no ha permitido la creación de la review:</h2>
+      <ul>
+        <% @new_review.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <br/>
+    <div class="field">
+      <label class="label" for="new_review[score]">Puntaje</label>
+      <div class="control">
+        <%= form.number_field :score, class:"input"%>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="new_review[content]">Contenido</label>
+      <div class="control">
+        <%= form.text_field :content, class:"textarea"%>
+      </div>
+    </div>
+    <%= hidden_field_tag 'user_id', @new_review.user_id %>
+    <%= hidden_field_tag 'product_id', @new_review.product_id %>
+    <br/>
+    <div class="field">
+      <div class="control">
+        <%= form.submit class:"button" %>
+      </div>
+    </div>
+<% end %>
+<%= link_to "Cancelar", product_path(@new_review.product_id) %>

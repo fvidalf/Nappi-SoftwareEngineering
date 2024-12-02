@@ -1,0 +1,23 @@
+<h2 class="title">Productos solicitados</h2>
+<table class="table is-bordered is-fullscreen">
+  <tr>
+  <th>Nombre</th>
+  <th>Precio</th>
+  <th>Descripción</th>
+  <th>Cantidad</th>
+  <th>Estado solicitud</th>
+  </tr>
+<tbody>
+  <% @request.products.all.each_with_index do |product, index|%>
+  <tr>
+    <td><%= product.name %></td>
+    <td><%= product.price %></td>
+    <td><%= product.description %></td>
+    <td><%= @quantites[index] %></td>
+    <td><%= @products_status[index] %></td>
+  </tr>
+  <% end %>
+</tbody>
+</table>
+<p>Costo total: <%= @total_cost %></p>
+<%= link_to "Volver a solicitudes", user_requests_path(current_user.id) %>

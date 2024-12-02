@@ -1,0 +1,33 @@
+<% unless @p_requests.empty? %>
+  <h2 class="title"> Solicitudes de productos </h2>
+  <table class="table is-bordered is-fullscreen">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Estado solicitud</th>
+      </tr>
+    <tbody>
+      <% @p_requests.each_with_index do |p_request, index|%>
+        <% if p_request.status != 'Creada' %>
+          <tr>
+            <td><%= @user_names[index] %></td>
+            <td><%= @requests[index].date %></td>
+            <td><%= @product_names[index] %></td>
+            <td><%= p_request.quantity %></td>
+            <td><%= p_request.status %></td>
+            <% if p_request.status == "Esperando Aprobación" %>
+              <td><%= button_to "Rechazar", p_request_resolution_path(user_id: params[:user_id] ,p_request_id: p_request.id, resolution: 'declined'), method: :patch %></td>
+              <td><%= button_to "Aprobar", p_request_resolution_path(user_id: params[:user_id], p_request_id: p_request.id, resolution: 'aproved'), method: :patch %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h2> Aún no has recibido ninguna solicitud de compra </h2>
+<% end %>
+<%= link_to "Volver a productos", products_path %>

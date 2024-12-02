@@ -1,0 +1,74 @@
+
+<div class="container">
+  <p class="title is-size-3 pt-5">Edit user</p>
+  <div class="columns">
+    <div class="column is-6">
+
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="field">
+          <label class="label" for="email">Email</label>
+          <div class="control">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+          </div>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div class="field">
+          <label class="label inline-block" for="password">Password</label>
+          <em>(leave blank if you don't want to change it)</em>
+          <div class="control">
+            <%= f.password_field :password, autocomplete: "new-password", class: "input" %>
+          </div>
+          <% if @minimum_password_length %>
+            <br />
+            <em><%= @minimum_password_length %> characters minimum</em>
+          <% end %>
+        </div>
+
+        <div class="field">
+          <label class="label" for="password_confirmation">Password confirmation</label>
+          <div class="control">
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label inline-block" for="current_password">Current password</label>
+            <em>(leave blank if you don't want to change it)</em>
+          <div class="control">
+            <%= f.password_field :current_password, autocomplete: "current-password", class: "input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="name">Name</label>
+          <div class="control">
+            <%= f.text_field :name, class: "input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="image">Image</label>
+          <div class="control">
+            <%= f.file_field :image %>
+          </div>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Update", class: "button" %>
+        </div>
+        <br>
+        <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "button" %>
+        <br>
+        <div>
+          <%= link_to "Back", :back, class: "no-link pb-5" %>
+        </div>
+      <% end %>
+  </div>
+</div>
